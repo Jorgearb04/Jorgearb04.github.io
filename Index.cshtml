@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>5G Secure Manager - DEMO</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #1f2933;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            color: #1f2933;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background: #1d4ed8;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>5G Secure Manager</h1>
+        <p>DEMO funcional – Gestión de riesgos de privacidad y seguridad en redes 5G</p>
+    </header>
+
+    <div class="container" id="login">
+        <h2>Inicio de Sesión</h2>
+        <input type="text" id="user" placeholder="Usuario">
+        <input type="password" id="pass" placeholder="Contraseña">
+        <button onclick="login()">Ingresar</button>
+    </div>
+
+    <div class="container hidden" id="app">
+        <h2>Registro de Riesgos</h2>
+
+        <input type="text" id="nombre" placeholder="Nombre del riesgo">
+
+        <select id="tipo">
+            <option>Privacidad</option>
+            <option>Seguridad</option>
+        </select>
+
+        <select id="impacto">
+            <option>Alto</option>
+            <option>Medio</option>
+            <option>Bajo</option>
+        </select>
+
+        <select id="probabilidad">
+            <option>Alta</option>
+            <option>Media</option>
+            <option>Baja</option>
+        </select>
+
+        <textarea id="descripcion" placeholder="Descripción del riesgo"></textarea>
+
+        <button onclick="agregarRiesgo()">Registrar Riesgo</button>
+
+        <h2>Listado de Riesgos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Riesgo</th>
+                    <th>Tipo</th>
+                    <th>Impacto</th>
+                    <th>Probabilidad</th>
+                    <th>Clasificación</th>
+                </tr>
+            </thead>
+            <tbody id="tablaRiesgos"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let riesgos = [];
+
+        function login() {
+          document.getElementById("login").classList.add("hidden");
+          document.getElementById("app").classList.remove("hidden");
+        }
+
+        function clasificar(impacto, probabilidad) {
+          if (impacto === "Alto" && probabilidad === "Alta") return "Crítico";
+          if (impacto === "Bajo" && probabilidad === "Baja") return "Bajo";
+          return "Medio";
+        }
+
+        function agregarRiesgo() {
+          let riesgo = {
+            nombre: nombre.value,
+            tipo: tipo.value,
+            impacto: impacto.value,
+            probabilidad: probabilidad.value,
+            clasificacion: clasificar(impacto.value, probabilidad.value)
+          };
+
+          riesgos.push(riesgo);
+          mostrarRiesgos();
+        }
+
+        function mostrarRiesgos() {
+          tablaRiesgos.innerHTML = "";
+          riesgos.forEach(r => {
+            tablaRiesgos.innerHTML += `
+              <tr>
+                <td>${r.nombre}</td>
+                <td>${r.tipo}</td>
+                <td>${r.impacto}</td>
+                <td>${r.probabilidad}</td>
+                <td>${r.clasificacion}</td>
+              </tr>`;
+          });
+        }
+    </script>
+
+</body>
+</html>
