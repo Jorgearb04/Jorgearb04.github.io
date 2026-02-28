@@ -3,179 +3,175 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Instagram Clone</title>
+<title>Social App Login</title>
+
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
 }
 
 body{
-    background:#fafafa;
+    background:#f4f4f4;
+    height:100vh;
     display:flex;
 }
 
-/* SIDEBAR */
-.sidebar{
-    width:250px;
-    height:100vh;
-    padding:20px;
-    border-right:1px solid #ddd;
-    position:fixed;
-    background:white;
+/* LADO IZQUIERDO */
+.left{
+    width:60%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:60px;
 }
 
-.logo{
-    font-size:24px;
-    font-weight:bold;
+.left h1{
+    font-size:48px;
+    font-weight:500;
+    text-align:center;
     margin-bottom:40px;
+    color:#222;
 }
 
-.menu li{
-    list-style:none;
-    padding:15px 0;
-    cursor:pointer;
-    font-size:16px;
+.left span{
+    background:linear-gradient(90deg,#ff8a00,#e52e71,#9b00ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.menu li:hover{
-    font-weight:bold;
+.cards{
+    position:relative;
+    width:350px;
+    height:400px;
 }
 
-/* MAIN CONTENT */
-.main{
-    margin-left:270px;
-    padding:30px;
-    width:100%;
+.card{
+    position:absolute;
+    width:260px;
+    height:360px;
+    border-radius:30px;
+    background:url("https://picsum.photos/300/500?random=1");
+    background-size:cover;
+    box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+
+.card:nth-child(1){
+    left:-40px;
+    top:20px;
+    transform:rotate(-10deg);
+}
+
+.card:nth-child(2){
+    left:40px;
+    z-index:2;
+}
+
+.card:nth-child(3){
+    left:120px;
+    top:20px;
+    transform:rotate(10deg);
+}
+
+/* LADO DERECHO */
+.right{
+    width:40%;
+    background:white;
     display:flex;
     justify-content:center;
-}
-
-/* STORIES */
-.stories{
-    display:flex;
-    gap:15px;
-    background:white;
-    padding:15px;
-    border:1px solid #ddd;
-    border-radius:10px;
-    margin-bottom:20px;
-}
-
-.story{
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    background:linear-gradient(45deg,#feda75,#d62976,#962fbf);
-    padding:3px;
-}
-
-.story img{
-    width:100%;
-    height:100%;
-    border-radius:50%;
-    border:2px solid white;
-}
-
-/* POST */
-.post{
-    width:500px;
-    background:white;
-    border:1px solid #ddd;
-    border-radius:10px;
-    margin-bottom:20px;
-}
-
-.post-header{
-    display:flex;
     align-items:center;
-    padding:10px;
-    font-weight:bold;
+    border-left:1px solid #ddd;
 }
 
-.post-header img{
-    width:35px;
-    height:35px;
-    border-radius:50%;
-    margin-right:10px;
+.form-box{
+    width:350px;
 }
 
-.post img{
+.form-box h3{
+    margin-bottom:20px;
+    font-weight:500;
+}
+
+input{
     width:100%;
-}
-
-.post-actions{
-    padding:10px;
+    padding:14px;
+    margin-bottom:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    outline:none;
     font-size:14px;
 }
 
-.post-actions span{
-    margin-right:10px;
+button{
+    width:100%;
+    padding:14px;
+    border-radius:20px;
+    border:none;
+    background:#8aa9d6;
+    color:white;
+    font-weight:bold;
     cursor:pointer;
+    margin-bottom:15px;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.link{
+    text-align:center;
+    font-size:14px;
+    margin:10px 0;
+    cursor:pointer;
+}
+
+.secondary{
+    background:transparent;
+    border:1px solid #3b82f6;
+    color:#3b82f6;
+}
+
+.footer{
+    position:absolute;
+    bottom:20px;
+    width:100%;
+    text-align:center;
+    font-size:12px;
+    color:#777;
 }
 </style>
 </head>
+
 <body>
 
-<div class="sidebar">
-    <div class="logo">MySocial</div>
-    <ul class="menu">
-        <li>🏠 Inicio</li>
-        <li>🔍 Buscar</li>
-        <li>🎬 Reels</li>
-        <li>💬 Mensajes</li>
-        <li>❤️ Notificaciones</li>
-        <li>➕ Crear</li>
-        <li>👤 Perfil</li>
-    </ul>
+<div class="left">
+    <h1>Mira los momentos cotidianos de <br> tus <span>mejores amigos</span>.</h1>
+
+    <div class="cards">
+        <div class="card"></div>
+        <div class="card" style="background:url('https://picsum.photos/300/500?random=2'); background-size:cover;"></div>
+        <div class="card" style="background:url('https://picsum.photos/300/500?random=3'); background-size:cover;"></div>
+    </div>
 </div>
 
-<div class="main">
-    <div>
-        <!-- STORIES -->
-        <div class="stories">
-            <div class="story"><img src="https://i.pravatar.cc/60?img=1"></div>
-            <div class="story"><img src="https://i.pravatar.cc/60?img=2"></div>
-            <div class="story"><img src="https://i.pravatar.cc/60?img=3"></div>
-            <div class="story"><img src="https://i.pravatar.cc/60?img=4"></div>
-        </div>
-
-        <!-- POST 1 -->
-        <div class="post">
-            <div class="post-header">
-                <img src="https://i.pravatar.cc/40?img=5">
-                usuario_demo
-            </div>
-            <img src="https://picsum.photos/500/400">
-            <div class="post-actions">
-                <span>❤️ Me gusta</span>
-                <span>💬 Comentar</span>
-                <span>📤 Compartir</span>
-                <p><strong>120 Me gusta</strong></p>
-                <p><strong>usuario_demo</strong> Texto de ejemplo del post...</p>
-            </div>
-        </div>
-
-        <!-- POST 2 -->
-        <div class="post">
-            <div class="post-header">
-                <img src="https://i.pravatar.cc/40?img=8">
-                another_user
-            </div>
-            <img src="https://picsum.photos/500/450">
-            <div class="post-actions">
-                <span>❤️ Me gusta</span>
-                <span>💬 Comentar</span>
-                <span>📤 Compartir</span>
-                <p><strong>340 Me gusta</strong></p>
-                <p><strong>another_user</strong> Otro ejemplo de publicación...</p>
-            </div>
-        </div>
-
+<div class="right">
+    <div class="form-box">
+        <h3>Iniciar sesión</h3>
+        <input type="text" placeholder="Número, usuario o correo">
+        <input type="password" placeholder="Contraseña">
+        <button>Iniciar sesión</button>
+        <div class="link">¿Has olvidado la contraseña?</div>
+        <button class="secondary">Crear una cuenta</button>
     </div>
+</div>
+
+<div class="footer">
+    © 2026 SocialApp - Proyecto educativo
 </div>
 
 </body>
 </html>
+
