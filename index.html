@@ -10,16 +10,22 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
 }
 
 body{
     background:#f4f4f4;
-    height:100vh;
+    min-height:100vh;
     display:flex;
 }
 
-/* LADO IZQUIERDO */
+/* CONTENEDOR GENERAL */
+.container{
+    display:flex;
+    width:100%;
+}
+
+/* IZQUIERDA (DESKTOP) */
 .left{
     width:60%;
     display:flex;
@@ -54,29 +60,31 @@ body{
     width:260px;
     height:360px;
     border-radius:30px;
-    background:url("https://picsum.photos/300/500?random=1");
     background-size:cover;
     box-shadow:0 20px 40px rgba(0,0,0,0.2);
 }
 
 .card:nth-child(1){
+    background:url("https://picsum.photos/300/500?random=1");
     left:-40px;
     top:20px;
     transform:rotate(-10deg);
 }
 
 .card:nth-child(2){
+    background:url("https://picsum.photos/300/500?random=2");
     left:40px;
     z-index:2;
 }
 
 .card:nth-child(3){
+    background:url("https://picsum.photos/300/500?random=3");
     left:120px;
     top:20px;
     transform:rotate(10deg);
 }
 
-/* LADO DERECHO */
+/* DERECHA */
 .right{
     width:40%;
     background:white;
@@ -136,36 +144,73 @@ button:hover{
 
 .footer{
     position:absolute;
-    bottom:20px;
+    bottom:15px;
     width:100%;
     text-align:center;
     font-size:12px;
     color:#777;
 }
+
+/* ============================= */
+/* 📱 RESPONSIVE PARA CELULAR */
+/* ============================= */
+
+@media (max-width: 900px){
+
+    .left{
+        display:none; /* Oculta parte izquierda */
+    }
+
+    .right{
+        width:100%;
+        border-left:none;
+        background:#ffffff;
+    }
+
+    .form-box{
+        width:90%;
+        max-width:400px;
+    }
+
+    body{
+        background:white;
+    }
+
+    .footer{
+        position:static;
+        margin-top:30px;
+        padding-bottom:20px;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="left">
-    <h1>Mira los momentos cotidianos de <br> tus <span>mejores amigos</span>.</h1>
+<div class="container">
 
-    <div class="cards">
-        <div class="card"></div>
-        <div class="card" style="background:url('https://picsum.photos/300/500?random=2'); background-size:cover;"></div>
-        <div class="card" style="background:url('https://picsum.photos/300/500?random=3'); background-size:cover;"></div>
-    </div>
-</div>
+    <div class="left">
+        <h1>Mira los momentos cotidianos de <br> tus <span>mejores amigos</span>.</h1>
 
-<div class="right">
-    <div class="form-box">
-        <h3>Iniciar sesión</h3>
-        <input type="text" placeholder="Número, usuario o correo">
-        <input type="password" placeholder="Contraseña">
-        <button>Iniciar sesión</button>
-        <div class="link">¿Has olvidado la contraseña?</div>
-        <button class="secondary">Crear una cuenta</button>
+        <div class="cards">
+            <div class="card"></div>
+            <div class="card"></div>
+            <div class="card"></div>
+        </div>
     </div>
+
+    <div class="right">
+        <div class="form-box">
+            <h3>Iniciar sesión</h3>
+            <input type="text" placeholder="Número, usuario o correo">
+            <input type="password" placeholder="Contraseña">
+            <button>Iniciar sesión</button>
+            <div class="link">¿Has olvidado la contraseña?</div>
+            <button class="secondary">Crear una cuenta</button>
+        </div>
+    </div>
+
 </div>
 
 <div class="footer">
@@ -174,4 +219,3 @@ button:hover{
 
 </body>
 </html>
-
