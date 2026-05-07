@@ -1,146 +1,99 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mobile Login</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
-}
-
-body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(180deg,#0f2027,#203a43,#2c5364);
-    color:white;
-}
-
-/* CONTENEDOR */
-.container{
-    width:100%;
-    max-width:430px;
-    padding:40px 25px;
-    text-align:center;
-}
-
-/* IDIOMA */
-.language{
-    color:#cfd8dc;
-    font-size:14px;
-    margin-bottom:40px;
-}
-
-/* LOGO */
-.logo{
-    margin-bottom:40px;
-}
-
-.logo img{
-    width:70px;
-}
-
-/* INPUTS */
-input{
-    width:100%;
-    padding:18px;
-    margin-bottom:15px;
-    border-radius:15px;
-    border:1px solid rgba(255,255,255,0.2);
-    background:rgba(255,255,255,0.05);
-    color:white;
-    font-size:16px;
-    outline:none;
-}
-
-input::placeholder{
-    color:#b0bec5;
-}
-
-/* BOTÓN LOGIN */
-.login-btn{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:30px;
-    background:#1877f2;
-    color:white;
-    font-size:18px;
-    font-weight:600;
-    margin-top:10px;
-    cursor:pointer;
-}
-
-.login-btn:active{
-    opacity:0.8;
-}
-
-/* FORGOT */
-.forgot{
-    margin-top:20px;
-    color:#e0e0e0;
-    font-size:15px;
-}
-
-/* CREATE ACCOUNT */
-.create-btn{
-    margin-top:60px;
-    width:100%;
-    padding:16px;
-    border-radius:30px;
-    border:1px solid #3ea6ff;
-    background:transparent;
-    color:#3ea6ff;
-    font-size:17px;
-    font-weight:500;
-}
-
-/* META */
-.meta{
-    margin-top:25px;
-    font-size:14px;
-    color:#cfd8dc;
-}
-
-/* SOLO MOBILE */
-@media(min-width:500px){
-    body{
-        background:#111;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BakeryFlow - Gestión de Turnos</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #e67e22; --light: #ecf0f1; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--light); padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: 10px; }
+        .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        select, button { padding: 10px; border-radius: 5px; border: 1px solid #ddd; }
+        button { background: var(--accent); color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #d35400; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background: var(--primary); color: white; }
+        .shift-mañana { background: #d4efdf; color: #1e8449; font-weight: bold; }
+        .shift-tarde { background: #d6eaf8; color: #2e86c1; font-weight: bold; }
+        .shift-descanso { background: #f2d7d5; color: #943126; font-weight: bold; }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
+    <h1>BakeryFlow: Control de Turnos Panadería</h1>
+    <p>Asignación dinámica de personal para la semana actual.</p>
 
-    <div class="language">English (US)</div>
-
-    <div class="logo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
+    <div class="controls">
+        <select id="employee">
+            <option value="Liz">Liz</option>
+            <option value="Daniela">Daniela</option>
+            <option value="Salome">Salomé</option>
+            <option value="Santiago">Santiago</option>
+            <option value="Luna">Luna</option>
+        </select>
+        <select id="day">
+            <option value="1">Lunes</option>
+            <option value="2">Martes</option>
+            <option value="3">Miércoles</option>
+            <option value="4">Jueves</option>
+            <option value="5">Viernes</option>
+            <option value="6">Sábado</option>
+            <option value="7">Domingo</option>
+        </select>
+        <select id="type">
+            <option value="Mañana">Mañana</option>
+            <option value="Tarde">Tarde</option>
+            <option value="Descanso">Descanso</option>
+        </select>
+        <button onclick="assignShift()">Asignar Turno</button>
     </div>
 
-    <input type="text" placeholder="Username, email or mobile number">
-    <input type="password" placeholder="Password">
-
-    <button class="login-btn">Log in</button>
-
-    <div class="forgot">Forgot password?</div>
-
-    <button class="create-btn">Create new account</button>
-
-    <div class="meta">Meta</div>
-
+    <table id="scheduleTable">
+        <thead>
+            <tr>
+                <th>Empleado</th>
+                <th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Se genera con JS -->
+        </tbody>
+    </table>
 </div>
+
+<script>
+    const employees = ["Liz", "Daniela", "Salome", "Santiago", "Luna"];
+    const schedule = {};
+
+    function initTable() {
+        const body = document.getElementById('tableBody');
+        body.innerHTML = '';
+        employees.forEach(emp => {
+            schedule[emp] = Array(7).fill("-");
+            let row = `<tr id="row-${emp}"><td><strong>${emp}</strong></td>`;
+            for(let i=0; i<7; i++) row += `<td id="cell-${emp}-${i+1}">-</td>`;
+            row += `</tr>`;
+            body.innerHTML += row;
+        });
+    }
+
+    function assignShift() {
+        const emp = document.getElementById('employee').value;
+        const day = document.getElementById('day').value;
+        const type = document.getElementById('type').value;
+        const cell = document.getElementById(`cell-${emp}-${day}`);
+        
+        cell.innerText = type;
+        cell.className = `shift-${type.toLowerCase()}`;
+    }
+
+    initTable();
+</script>
 
 </body>
 </html>
-
-
