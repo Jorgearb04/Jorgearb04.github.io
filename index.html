@@ -4,56 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BakeryFlow - Gestión de Turnos</title>
+    <!-- Librerías para PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    
     <style>
-        :root { --primary: #2c3e50; --accent: #e67e22; --light: #ecf0f1; --danger: #c0392b; }
+        :root { --primary: #2c3e50; --accent: #e67e22; --light: #ecf0f1; --danger: #c0392b; --success: #27ae60; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--light); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
-        /* Contenedor de Login */
         #login-container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); width: 100%; max-width: 400px; text-align: center; }
-        #login-container h2 { color: var(--primary); margin-bottom: 20px; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         
-        /* Contenedor Principal (Dashboard) */
-        #main-container { display: none; width: 95%; max-width: 1000px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin: 20px; }
+        #main-container { display: none; width: 95%; max-width: 1100px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin: 20px; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--accent); margin-bottom: 20px; padding-bottom: 10px; }
         
-        /* Botones */
+        .button-group { display: flex; gap: 10px; }
         button { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-login { background: var(--accent); color: white; width: 100%; font-size: 16px; }
+        .btn-login { background: var(--accent); color: white; width: 100%; }
         .btn-assign { background: var(--primary); color: white; }
+        .btn-pdf { background: var(--success); color: white; }
         .btn-logout { background: var(--danger); color: white; }
         button:hover { opacity: 0.8; transform: translateY(-2px); }
 
-        /* Tabla y Controles */
-        .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+        .controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px; background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
         select { padding: 10px; border-radius: 5px; border: 1px solid #ddd; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
         th { background: var(--primary); color: white; }
         
-        /* Estados de Turnos */
-        .shift-mañana { background: #d4efdf; color: #1e8449; font-weight: bold; border-radius: 4px; }
-        .shift-tarde { background: #d6eaf8; color: #2e86c1; font-weight: bold; border-radius: 4px; }
-        .shift-descanso { background: #f2d7d5; color: #943126; font-weight: bold; border-radius: 4px; }
+        .shift-mañana { background: #d4efdf !important; color: #1e8449; font-weight: bold; }
+        .shift-tarde { background: #d6eaf8 !important; color: #2e86c1; font-weight: bold; }
+        .shift-descanso { background: #f2d7d5 !important; color: #943126; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<!-- PANTALLA DE LOGIN -->
 <div id="login-container">
     <h2>BakeryFlow Login</h2>
-    <p>Acceso para Gerencia de Proyectos</p>
-    <input type="text" id="username" placeholder="Usuario">
-    <input type="password" id="password" placeholder="Contraseña">
+    <p>Proyecto Aplicado - ACA</p>
+    <input type="text" id="username" placeholder="Usuario (admin)">
+    <input type="password" id="password" placeholder="Contraseña (1234)">
     <button class="btn-login" onclick="login()">Entrar al Sistema</button>
     <p id="error-msg" style="color: red; display: none; margin-top: 10px;">Credenciales incorrectas</p>
 </div>
 
-<!-- PANTALLA PRINCIPAL (DASHBOARD) -->
 <div id="main-container">
     <div class="header">
-        <h1>Panel de Gestión de Turnos</h1>
-        <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+        <div>
+            <h1 style="margin:0;">Panel de Gestión de Turnos</h1>
+            <small>Sistema de Control - Panadería</small>
+        </div>
+        <div class="button-group">
+            <button class="btn-pdf" onclick="downloadPDF()">Descargar PDF</button>
+            <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+        </div>
     </div>
 
     <div class="controls">
@@ -95,30 +99,21 @@
 <script>
     const employees = ["Liz", "Daniela", "Salome", "Santiago", "Luna"];
 
-    // Función de Login simulada
     function login() {
         const user = document.getElementById('username').value;
         const pass = document.getElementById('password').value;
-
-        // Usuario y contraseña de prueba (puedes cambiarlos)
         if (user === "admin" && pass === "1234") {
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('main-container').style.display = 'block';
-            document.body.style.alignItems = 'flex-start'; // Ajuste visual
+            document.body.style.alignItems = 'flex-start';
             initTable();
         } else {
             document.getElementById('error-msg').style.display = 'block';
         }
     }
 
-    // Función de Logout
     function logout() {
-        document.getElementById('login-container').style.display = 'block';
-        document.getElementById('main-container').style.display = 'none';
-        document.body.style.alignItems = 'center';
-        document.getElementById('username').value = "";
-        document.getElementById('password').value = "";
-        document.getElementById('error-msg').style.display = 'none';
+        location.reload(); // Recarga para limpiar datos
     }
 
     function initTable() {
@@ -137,9 +132,36 @@
         const day = document.getElementById('day').value;
         const type = document.getElementById('type').value;
         const cell = document.getElementById(`cell-${emp}-${day}`);
-        
         cell.innerText = type;
         cell.className = `shift-${type.toLowerCase()}`;
+    }
+
+    // FUNCIÓN PARA GENERAR EL PDF
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        doc.setFontSize(18);
+        doc.text("BakeryFlow: Reporte Semanal de Turnos", 14, 20);
+        doc.setFontSize(11);
+        doc.text("Proyecto: Gerencia de Proyectos Informáticos - ACA", 14, 28);
+        doc.text(`Fecha de exportación: ${new Date().toLocaleDateString()}`, 14, 35);
+
+        doc.autoTable({
+            html: '#scheduleTable',
+            startY: 45,
+            theme: 'grid',
+            headStyles: { fillColor: [44, 62, 80] },
+            styles: { fontSize: 10, cellPadding: 3 },
+            didParseCell: function (data) {
+                // Mantiene los colores de los turnos en el PDF
+                if (data.cell.text[0] === 'Mañana') data.cell.styles.fillColor = [212, 239, 223];
+                if (data.cell.text[0] === 'Tarde') data.cell.styles.fillColor = [214, 234, 248];
+                if (data.cell.text[0] === 'Descanso') data.cell.styles.fillColor = [242, 215, 213];
+            }
+        });
+
+        doc.save("BakeryFlow_Turnos.pdf");
     }
 </script>
 
